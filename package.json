@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "scrape": "node src/scrape.js",
-    "inspect": "node src/inspect.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "scrape": "node src/scrape.js"
   },
   "keywords": [],
   "author": "",

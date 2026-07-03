@@ -28,18 +28,20 @@ function normalizeAvailability(text) {
   try {
     console.log("Запуск браузера...");
     // headless: true для продакшена. Можно временно переключить в false для визуальной отладки
-    // browser = await chromium.launch({ channel: "chrome", headless: true });
-    let browser;
 
     try {
       browser = await chromium.launch({
         channel: "chrome",
         headless: true,
       });
+
+      console.log("Using Google Chrome");
     } catch {
       browser = await chromium.launch({
         headless: true,
       });
+
+      console.log("Using Playwright Chromium");
     }
 
     // Создаем контекст со стандартным User-Agent, чтобы минимизировать шанс блокировки Cloudflare
@@ -58,18 +60,9 @@ function normalizeAvailability(text) {
     // domcontentloaded гораздо быстрее и надежнее на тяжелых сайтах, чем networkidle
     await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
 
-    console.log(5555, await page.content());
-
     // Выводим title для проверки: если там Cloudflare ("Just a moment..."), мы сразу это увидим
     const pageTitle = await page.title();
     console.log(`Заголовок загруженной страницы: "${pageTitle}"`);
-
-    // Делаем скриншот для визуальной отладки (сохранится в корне проекта)
-    await page
-      .screenshot({ path: "debug.png", fullPage: true })
-      .catch((err) => {
-        console.warn("Не удалось сохранить debug.png:", err.message);
-      });
 
     // Ждем, пока заголовок появится в DOM (не обязательно ждать его полной видимости/отрисовки)
     console.log("Ожидание элемента заголовка в DOM...");
@@ -86,7 +79,7 @@ function normalizeAvailability(text) {
     const title = titleText ? titleText.trim() : null;
     const brand = "MSI";
 
-    // 2. Цена и наличие
+    // 2. Цена и наличие (метод вроде как устарел, но пока работает)
     const priceText = await page
       .$eval("#prices-new", (el) => el.textContent)
       .catch(() => null);
