@@ -28,8 +28,6 @@ function normalizeAvailability(text) {
   try {
     console.log("Запуск браузера...");
     // headless: true для продакшена. Можно временно переключить в false для визуальной отладки
-    // browser = await chromium.launch({ channel: "chrome", headless: true });
-    let browser;
 
     try {
       browser = await chromium.launch({
@@ -63,13 +61,6 @@ function normalizeAvailability(text) {
     // Выводим title для проверки: если там Cloudflare ("Just a moment..."), мы сразу это увидим
     const pageTitle = await page.title();
     console.log(`Заголовок загруженной страницы: "${pageTitle}"`);
-
-    // Делаем скриншот для визуальной отладки (сохранится в корне проекта)
-    await page
-      .screenshot({ path: "debug.png", fullPage: true })
-      .catch((err) => {
-        console.warn("Не удалось сохранить debug.png:", err.message);
-      });
 
     // Ждем, пока заголовок появится в DOM (не обязательно ждать его полной видимости/отрисовки)
     console.log("Ожидание элемента заголовка в DOM...");
