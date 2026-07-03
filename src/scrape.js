@@ -56,8 +56,6 @@ function normalizeAvailability(text) {
     // domcontentloaded гораздо быстрее и надежнее на тяжелых сайтах, чем networkidle
     await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
 
-    console.log(5555, await page.content());
-
     // Выводим title для проверки: если там Cloudflare ("Just a moment..."), мы сразу это увидим
     const pageTitle = await page.title();
     console.log(`Заголовок загруженной страницы: "${pageTitle}"`);
